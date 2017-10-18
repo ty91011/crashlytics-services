@@ -21,7 +21,16 @@ class Service::WebHook < Service::Base
       display_error("#{self.class.title} verification failed - #{error_response_details(response)}")
     end
   end
-
+  
+  def receive_issue_velocity_alert(payload)
+    response = post_event(config[:url], 'issue_velocity_alert', 'velocity', payload)
+    if response.success?
+      log('issue_velocity_alert successful')
+    else
+      display_error "#{self.class.title} issue velocity alert failed - #{error_response_details(response)}"
+    end
+  end
+  
   private
 
   # Post an event string to a url with a payload hash
